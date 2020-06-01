@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Vimeo Player API Demo</title>
+    <link rel="stylesheet" href="static/internal/api-demo.css">
+    <meta charset="utf-8"/>
+</head>
+<body>
+    <div id="wrap">
+        <h1>Vimeo Player API Demo</h1>
+
+        <div class="left">
+	    <iframe src="https://player.vimeo.com/video/76979871" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+<p><a href="https://vimeo.com/76979871">The New Vimeo Player (You Know, For Videos)</a> from <a href="https://vimeo.com/staff">Vimeo Staff</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+
+            <div class="console">
+                <button type="button" class="clear btn">Clear Log</button>
+                <h2>Message Log</h2>
+                <p class="output"></p>
+            </div>
+        </div>
+
+        <div class="right">
+            <fieldset class="methods js-methods">
+                <legend>Methods</legend>
+
+                <div class="buttons">
+                    <button id="play-button" class="js-method btn btn-large" data-method="play" disabled>Play</button>
+                    <button id="pause-button" class="js-method btn btn-large" data-method="pause" disabled>Pause</button>
+                    <button id="unload-button" class="js-method btn btn-large" data-method="unload" disabled>Unload Video</button>
+                </div>
+
+                <div class="load-video value-input">
+                    <input id="video-id" type="text" disabled>
+                    <button id="load-button" class="btn btn-large" data-method="loadVideo" disabled>Load Video</button>
+                </div>
+
+                <div class="cue-points value-input">
+                    <input id="add-cuepoint" type="number" pattern="[0-9]+" disabled>
+                    <button id="add-cuepoint-button" class="btn btn-large" data-method="loadVideo" disabled>Add Cue Point</button>
+                </div>
+            </fieldset>
+
+            <fieldset class="setters js-setters">
+                <legend>Setters</legend>
+
+                <div class="checkboxes">
+                    <label><input id="loop-checkbox" type="checkbox" disabled> Loop</label>
+                    <label><input id="autopause-checkbox" type="checkbox" disabled> Autopause</label>
+                </div>
+
+                <div class="color">
+                    <label for="color-input">Color</label>
+                    <div class="value-input">
+                        <input id="color-input" type="color" size="7" disabled>
+                        <button id="random-color-button" class="btn btn-large" disabled>Random</button>
+                        <button id="default-color-button" class="btn btn-large" disabled>Default</button>
+                    </div>
+                </div>
+
+                <div class="current-time">
+                    <label for="current-time-input">Current Time</label>
+                    <div class="value-input">
+                        <input id="current-time-range" type="range" min="0" max="1" step="any" value="0" disabled>
+                    </div>
+                    <div class="value-input">
+                        <input id="current-time-input" type="number" value="0" disabled>
+                        <button id="current-time-button" class="btn btn-large" disabled>Set Current Time</button>
+                    </div>
+                </div>
+
+
+                <div class="playback-rate">
+                    <div class="value-input">
+                        <input id="playback-rate-input" type="number" value="1" disabled>
+                        <button id="playback-rate-button" class="btn btn-large" disabled>Set Playback Rate</button>
+                    </div>
+                </div>
+
+                <div class="text-tracks">
+                    <label>Text Tracks</label>
+                    <div>
+                        <select id="text-track-select" disabled>
+                            <option value="none">None</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="volume">
+                    <label>Volume</label>
+                    <input id="volume-range" type="range" min="0" max="1" step="any" disabled>
+                </div>
+
+                <div class="muted">
+                    <button id="mute-button" class="btn btn-large">Mute</button>
+                    <button id="unmute-button" class="btn btn-large">Unmute</button>
+                </div>
+            </fieldset>
+
+            <fieldset class="getters js-getters">
+                <legend>Getters</legend>
+
+                <button id="get-autopause-button" class="js-getter" data-getter="getAutopause" disabled>Autopause</button>
+                <button id="get-buffered-button" class="js-getter" data-getter="getBuffered" disabled>Buffered</button>
+                <button id="get-color-button" class="js-getter" data-getter="getColor" disabled>Color</button>
+                <button id="get-cue-points-button" class="js-getter" data-getter="getCuePoints" disabled>Cue Points</button>
+                <button id="get-chapters-button" class="js-getter" data-getter="getChapters" disabled>Chapters</button>
+                <button id="get-current-chapter-button" class="js-getter" data-getter="getCurrentChapter" disabled>Current Chapter</button>
+                <button id="get-current-time-button" class="js-getter" data-getter="getCurrentTime" disabled>Current Time</button>
+                <button id="get-duration-button" class="js-getter" data-getter="getDuration" disabled>Duration</button>
+                <button id="get-embed-code-button" class="js-getter" data-getter="getVideoEmbedCode" disabled>Embed Code</button>
+                <button id="get-ended-button" class="js-getter" data-getter="getEnded" disabled>Ended</button>
+                <button id="get-loop-button" class="js-getter" data-getter="getLoop" disabled>Loop</button>
+                <button id="get-muted-button" class="js-getter" data-getter="getMuted" disabled>Muted</button>
+                <button id="get-paused-button" class="js-getter" data-getter="getPaused" disabled>Paused</button>
+                <button id="get-played-button" class="js-getter" data-getter="getPlayed" disabled>Played</button>
+                <button id="get-playback-rate-button" class="js-getter" data-getter="getPlaybackRate" disabled>Playback Rate</button>
+                <button id="get-seekable-button" class="js-getter" data-getter="getSeekable" disabled>Seekable</button>
+                <button id="get-seeking-button" class="js-getter" data-getter="getSeeking" disabled>Seeking</button>
+                <button id="get-tracks-button" class="js-getter" data-getter="getTextTracks" disabled>Text Tracks</button>
+                <button id="get-title-button" class="js-getter" data-getter="getVideoTitle" disabled>Title</button>
+                <button id="get-video-url-button" class="js-getter" data-getter="getVideoUrl" disabled>URL</button>
+                <button id="get-video-width-button" class="js-getter" data-getter="getVideoWidth" disabled>Video Width</button>
+                <button id="get-video-height-button" class="js-getter" data-getter="getVideoHeight" disabled>Video Height</button>
+                <button id="get-volume-button" class="js-getter" data-getter="getVolume" disabled>Volume</button>
+            </fieldset>
+
+            <fieldset class="event-listeners js-event-listeners">
+                <legend>Event Listeners</legend>
+
+                <label><input id="play-checkbox" type="checkbox" class="js-event-listener" data-event="play" disabled> play</label>
+                <label><input id="pause-checkbox" type="checkbox" class="js-event-listener" data-event="pause" disabled> pause</label>
+                <label><input id="ended-checkbox" type="checkbox" class="js-event-listener" data-event="ended" disabled> ended</label>
+                <label><input id="timeupdate-checkbox" type="checkbox" class="js-event-listener" data-event="timeupdate" disabled> timeupdate</label>
+                <label><input id="progress-checkbox" type="checkbox" class="js-event-listener" data-event="progress" disabled> progress</label>
+                <label><input id="seeking-checkbox" type="checkbox" class="js-event-listener" data-event="seeking" disabled> seeking</label>
+                <label><input id="seeked-checkbox" type="checkbox" class="js-event-listener" data-event="seeked" disabled> seeked</label>
+                <label><input id="volumechange-checkbox" type="checkbox" class="js-event-listener" data-event="volumechange" disabled> volumechange</label>
+                <label><input id="texttrackchange-checkbox" type="checkbox" class="js-event-listener" data-event="texttrackchange" disabled> texttrackchange</label>
+                <label><input id="cuechange-checkbox" type="checkbox" class="js-event-listener" data-event="cuechange" disabled> cuechange</label>
+                <label><input id="chapterchange-checkbox" type="checkbox" class="js-event-listener" data-event="chapterchange" disabled> chapterchange</label>
+                <label><input id="error-checkbox" type="checkbox" class="js-event-listener" data-event="error" disabled> error</label>
+                <label><input id="loaded-checkbox" type="checkbox" class="js-event-listener" data-event="loaded" disabled> loaded</label>
+                <label><input id="cuepoint-checkbox" type="checkbox" class="js-event-listener" data-event="cuepoint" disabled> cuepoint</label>
+                <label><input id="playbackratechange-checkbox" type="checkbox" class="js-event-listener" data-event="playbackratechange" disabled> playbackratechange</label>
+                <label><input id="bufferstart-checkbox" type="checkbox" class="js-event-listener" data-event="bufferstart" disabled> bufferstart</label>
+                <label><input id="bufferend-checkbox" type="checkbox" class="js-event-listener" data-event="bufferend" disabled> bufferend</label>
+                <label><input id="fullscreenchange-checkbox" type="checkbox" class="js-event-listener" data-event="fullscreenchange" disabled> fullscreenchange</label>
+                <label><input id="loadedmetadata-checkbox" type="checkbox" class="js-event-listener" data-event="loadedmetadata" disabled> loadedmetadata</label>
+                <label><input id="loadeddata-checkbox" type="checkbox" class="js-event-listener" data-event="loadeddata" disabled> loadeddata</label>
+                <label><input id="loadstart-checkbox" type="checkbox" class="js-event-listener" data-event="loadstart" disabled> loadstart</label>
+                <label><input id="durationchange-checkbox" type="checkbox" class="js-event-listener" data-event="durationchange" disabled> durationchange</label>
+                <label><input id="waiting-checkbox" type="checkbox" class="js-event-listener" data-event="waiting" disabled> waiting</label>
+            </fieldset>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="../dist/player.js"></script>
+    <script src="static/internal/api-demo.js"></script>
+</body>
+</html>
