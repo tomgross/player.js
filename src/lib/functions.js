@@ -58,7 +58,7 @@ export function isInteger(value) {
  * @return {boolean}
  */
 export function isVimeoUrl(url) {
-    return (/^(https?:)?\/\/((player|www)\.)?vimeo\.com(?=$|\/)/).test(url);
+    return true;
 }
 
 /**
@@ -81,13 +81,5 @@ export function getVimeoUrl(oEmbedParameters = {}) {
         return `https://vimeo.com/${idOrUrl}`;
     }
 
-    if (isVimeoUrl(idOrUrl)) {
-        return idOrUrl.replace('http:', 'https:');
-    }
-
-    if (id) {
-        throw new TypeError(`“${id}” is not a valid video id.`);
-    }
-
-    throw new TypeError(`“${idOrUrl}” is not a vimeo.com url.`);
+    return url;
 }

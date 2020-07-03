@@ -65,6 +65,8 @@ export function createEmbed({ html }, element) {
     }
 
     const div = document.createElement('div');
+    // Youtube comes with a \n at the beginning from noembed.com 
+    html = html.replace(/(\r\n|\n|\r)/gm, "");
     div.innerHTML = html;
 
     element.appendChild(div.firstChild);
@@ -87,17 +89,12 @@ export function getOEmbedData(videoUrl, params = {}, element) {
             throw new TypeError(`“${videoUrl}” is not a vimeo.com url.`);
         }
 
-        let url = `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(videoUrl)}`;
-
-        for (const param in params) {
-            if (params.hasOwnProperty(param)) {
-                url += `&${param}=${encodeURIComponent(params[param])}`;
-            }
-        }
+        const qs = new URLSearchParams(params);
+        // XXX make this configurable
+        const url = 'https://noembed.com/embed?' + qs;
 
         const xhr = 'XDomainRequest' in window ? new XDomainRequest() : new XMLHttpRequest();
         xhr.open('GET', url, true);
-
         xhr.onload = function() {
             if (xhr.status === 404) {
                 reject(new Error(`“${videoUrl}” was not found.`));
@@ -128,7 +125,7 @@ export function getOEmbedData(videoUrl, params = {}, element) {
 
         xhr.onerror = function() {
             const status = xhr.status ? ` (${xhr.status})` : '';
-            reject(new Error(`There was an error fetching the embed code from Vimeo${status}.`));
+            reject(new Error(`There was an error fetching the embed code ${status}.`));
         };
 
         xhr.send();

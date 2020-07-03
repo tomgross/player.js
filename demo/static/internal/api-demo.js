@@ -241,7 +241,14 @@ $(function() {
     };
 
     // Create the player
-    var player = new Vimeo.Player($('iframe'));
+
+    var options = {
+        url: 'https://vimeo.com/76979871',
+        width: 640,
+        loop: true
+    };
+
+    var player = new Vimeo.Player('made-in-ny', options);
     window.demoPlayer = player;
 
     // Log when the player is ready

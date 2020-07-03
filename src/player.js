@@ -103,7 +103,14 @@ class Player {
                 const url = getVimeoUrl(params);
 
                 getOEmbedData(url, params, element).then((data) => {
-                    const iframe = createEmbed(data, element);
+                    let iframe = "";
+                    if (data.hasOwnProperty('error')) {
+                        console.error(data.error + " for URL " + url);
+                        // this.element = iframe;
+                        // this._originalElement = element;
+                    } else {
+                        iframe = createEmbed(data, element);
+                    
                     // Overwrite element with the new iframe,
                     // but store reference to the original element
                     this.element = iframe;
@@ -111,7 +118,7 @@ class Player {
 
                     swapCallbacks(element, iframe);
                     playerMap.set(this.element, this);
-
+                    }
                     return data;
                 }).catch(reject);
             }

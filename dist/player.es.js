@@ -78,7 +78,7 @@ function isInteger(value) {
  */
 
 function isVimeoUrl(url) {
-  return /^(https?:)?\/\/((player|www)\.)?vimeo\.com(?=$|\/)/.test(url);
+  return true;
 }
 /**
  * Get the Vimeo URL from an element.
@@ -102,15 +102,7 @@ function getVimeoUrl() {
     return "https://vimeo.com/".concat(idOrUrl);
   }
 
-  if (isVimeoUrl(idOrUrl)) {
-    return idOrUrl.replace('http:', 'https:');
-  }
-
-  if (id) {
-    throw new TypeError("\u201C".concat(id, "\u201D is not a valid video id."));
-  }
-
-  throw new TypeError("\u201C".concat(idOrUrl, "\u201D is not a vimeo.com url."));
+  return url;
 }
 
 var arrayIndexOfSupport = typeof Array.prototype.indexOf !== 'undefined';
@@ -757,7 +749,9 @@ function createEmbed(_ref, element) {
     return element.querySelector('iframe');
   }
 
-  var div = document.createElement('div');
+  var div = document.createElement('div'); // Youtube comes with a \n at the beginning from noembed.com 
+
+  html = html.replace(/(\r\n|\n|\r)/gm, "");
   div.innerHTML = html;
   element.appendChild(div.firstChild);
   element.setAttribute('data-vimeo-initialized', 'true');
@@ -776,18 +770,10 @@ function getOEmbedData(videoUrl) {
   var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var element = arguments.length > 2 ? arguments[2] : undefined;
   return new Promise(function (resolve, reject) {
-    if (!isVimeoUrl(videoUrl)) {
-      throw new TypeError("\u201C".concat(videoUrl, "\u201D is not a vimeo.com url."));
-    }
 
-    var url = "https://vimeo.com/api/oembed.json?url=".concat(encodeURIComponent(videoUrl));
+    var qs = new URLSearchParams(params); // XXX make this configurable
 
-    for (var param in params) {
-      if (params.hasOwnProperty(param)) {
-        url += "&".concat(param, "=").concat(encodeURIComponent(params[param]));
-      }
-    }
-
+    var url = 'https://noembed.com/embed?' + qs;
     var xhr = 'XDomainRequest' in window ? new XDomainRequest() : new XMLHttpRequest();
     xhr.open('GET', url, true);
 
@@ -820,7 +806,7 @@ function getOEmbedData(videoUrl) {
 
     xhr.onerror = function () {
       var status = xhr.status ? " (".concat(xhr.status, ")") : '';
-      reject(new Error("There was an error fetching the embed code from Vimeo".concat(status, ".")));
+      reject(new Error("There was an error fetching the embed code ".concat(status, ".")));
     };
 
     xhr.send();
@@ -878,9 +864,7 @@ function resizeEmbeds() {
   window.VimeoPlayerResizeEmbeds_ = true;
 
   var onMessage = function onMessage(event) {
-    if (!isVimeoUrl(event.origin)) {
-      return;
-    } // 'spacechange' is fired only on embeds with cards
+    if (!isVimeoUrl(event.origin)) ; // 'spacechange' is fired only on embeds with cards
 
 
     if (!event.data || event.data.event !== 'spacechange') {
@@ -1109,13 +1093,21 @@ function () {
         var params = getOEmbedParameters(element, options);
         var url = getVimeoUrl(params);
         getOEmbedData(url, params, element).then(function (data) {
-          var iframe = createEmbed(data, element); // Overwrite element with the new iframe,
-          // but store reference to the original element
+          var iframe = "";
 
-          _this.element = iframe;
-          _this._originalElement = element;
-          swapCallbacks(element, iframe);
-          playerMap.set(_this.element, _this);
+          if (data.hasOwnProperty('error')) {
+            console.error(data.error + " for URL " + url); // this.element = iframe;
+            // this._originalElement = element;
+          } else {
+            iframe = createEmbed(data, element); // Overwrite element with the new iframe,
+            // but store reference to the original element
+
+            _this.element = iframe;
+            _this._originalElement = element;
+            swapCallbacks(element, iframe);
+            playerMap.set(_this.element, _this);
+          }
+
           return data;
         }).catch(reject);
       }
